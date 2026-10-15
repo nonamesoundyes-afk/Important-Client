@@ -1,5 +1,6 @@
 package dev.important;
 
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -62,7 +63,10 @@ public final class ImportantHudEditor extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
+        double mouseX = click.x();
+        double mouseY = click.y();
+        int button = click.button();
         if (button == 0) {
             int x = ImportantConfig.hudX(), y = ImportantConfig.hudY();
             int mainW = Math.max(142, textRenderer.getWidth("XYZ  -123.4  64.0  123.4") + 24);
@@ -74,11 +78,14 @@ public final class ImportantHudEditor extends Screen {
                 draggingKeys = true; draggingMain = false; dragOffsetX = (int) mouseX - kx; dragOffsetY = (int) mouseY - ky; return true;
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+    public boolean mouseDragged(Click click, double deltaX, double deltaY) {
+        double mouseX = click.x();
+        double mouseY = click.y();
+        int button = click.button();
         if (button == 0 && draggingMain) {
             ImportantConfig.setHudPosition((int) mouseX - dragOffsetX, (int) mouseY - dragOffsetY);
             return true;
@@ -87,13 +94,13 @@ public final class ImportantHudEditor extends Screen {
             ImportantConfig.setKeysPosition((int) mouseX - dragOffsetX - width, (int) mouseY - dragOffsetY - height);
             return true;
         }
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return super.mouseDragged(click, deltaX, deltaY);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (button == 0) { draggingMain = false; draggingKeys = false; }
-        return super.mouseReleased(mouseX, mouseY, button);
+    public boolean mouseReleased(Click click) {
+        if (click.button() == 0) { draggingMain = false; draggingKeys = false; }
+        return super.mouseReleased(click);
     }
 
     @Override public boolean shouldPause() { return false; }
