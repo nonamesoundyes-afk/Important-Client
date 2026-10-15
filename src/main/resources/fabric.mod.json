@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "important",
+  "version": "${version}",
+  "name": "Important",
+  "description": "Client-side visual customization: minimalist ClickGUI, HUD widgets and profiles.",
+  "authors": ["Important"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": { "client": ["dev.important.ImportantClient"] },
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
