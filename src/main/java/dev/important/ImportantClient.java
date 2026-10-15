@@ -68,7 +68,13 @@ public final class ImportantClient implements ClientModInitializer {
         }
         if (ImportantConfig.enabled("Armor HUD")) {
             StringBuilder armor = new StringBuilder("ARMOR  ");
-            for (net.minecraft.item.ItemStack stack : client.player.getArmorItems()) {
+            for (net.minecraft.entity.EquipmentSlot slot : new net.minecraft.entity.EquipmentSlot[] {
+                    net.minecraft.entity.EquipmentSlot.HEAD,
+                    net.minecraft.entity.EquipmentSlot.CHEST,
+                    net.minecraft.entity.EquipmentSlot.LEGS,
+                    net.minecraft.entity.EquipmentSlot.FEET
+            }) {
+                net.minecraft.item.ItemStack stack = client.player.getEquippedStack(slot);
                 if (!stack.isEmpty()) armor.append(stack.getDamage() >= 0 && stack.isDamageable()
                         ? Math.max(0, stack.getMaxDamage() - stack.getDamage()) * 100 / Math.max(1, stack.getMaxDamage()) + "% " : "■ ");
                 else armor.append("— ");
@@ -102,7 +108,11 @@ public final class ImportantClient implements ClientModInitializer {
                                 String label, int x, int y, boolean pressed) {
         int w = label.equals("SPACE") ? 75 : 23;
         context.fill(x, y, x + w, y + 19, pressed ? ACCENT : PANEL);
-        context.drawBorder(x, y, w, 19, 0xFF394454);
+        int border = 0xFF394454;
+        context.fill(x, y, x + w, y + 1, border);
+        context.fill(x, y + 18, x + w, y + 19, border);
+        context.fill(x, y, x + 1, y + 19, border);
+        context.fill(x + w - 1, y, x + w, y + 19, border);
         int textW = client.textRenderer.getWidth(label);
         context.drawTextWithShadow(client.textRenderer, label, x + (w - textW) / 2, y + 6,
                 pressed ? 0xFFFFFFFF : TEXT);
